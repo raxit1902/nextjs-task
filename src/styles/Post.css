@@ -1,0 +1,15 @@
+.post {
+  background-color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.post h1 {
+  font-size: 2rem;
+  color: #0070f3;
+}
+
+.post p {
+  line-height: 1.6;
+}
