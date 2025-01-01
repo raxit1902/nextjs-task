@@ -19,11 +19,9 @@ export default async function HomePage() {
     <>
       <div className="header">
         <h1>Post List</h1>
-        <div className="create-button">
-          <Link href="/create" className="button success-button">
-            Create New Post
-          </Link>
-        </div>
+        <Link href="/create" className="button success-button">
+          Create New Post
+        </Link>
       </div>
       <div className="grid">
         {posts.map((post: { id: number; title: string; body: string }) => (

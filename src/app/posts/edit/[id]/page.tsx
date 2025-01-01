@@ -62,14 +62,14 @@ const page = () => {
         onChange={(e) => setBody(e.target.value)}
       ></textarea>
       <div className="form-buttons">
-                <button
-                    type="button"
-                    className="button dark-button"
-                    onClick={() => router.push("/")}
-                >
-                    Cancel
-                </button>
-      <button type='submit' className='button primary-button'>Submit</button>
+        <button
+          type="button"
+          className="button dark-button"
+          onClick={() => router.push("/")}
+        >
+          Cancel
+        </button>
+        <button type='submit' className='button primary-button'>Submit</button>
       </div>
     </form>
   );
