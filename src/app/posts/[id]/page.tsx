@@ -1,43 +1,31 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { fetchPostByIdRequest } from "../../redux/slices/postsSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
 import "../../../styles/Post.css";
+import Link from "next/link";
 
-const PostPage = ({ params }: any) => {
-    const dispatch = useDispatch();
-    const { currentPost, loading, error } = useSelector((state: RootState) => state.posts);
-    const router = useRouter();
-    const { id } = params;
 
-    useEffect(() => {
-        dispatch(fetchPostByIdRequest(id));
-    }, [dispatch]);
+export default async function PostPage({ params }: { params: { id: string } }) {
+    const fetchPostById = async (id: string) => {
+        const response = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, {
+            cache: "no-store",
+        });
+        console.log("console_response", response)
+        if (!response.ok) {
+            throw new Error("Failed to fetch post");
+        }
 
-    const handleGoBack = () => {
-        router.back();
-    };
-
-    if (loading) {
-        return <p>Loading...</p>;
+        return response.json();
     }
+    const post = await fetchPostById(params.id);
 
-    if (error) {
-        return <p>Error: {error}</p>;
-    }
 
     return (
         <div>
-            <button onClick={handleGoBack}>Go Back</button>
+            <Link href="/">
+                Go Back
+            </Link>
             <div className="post">
-                <h1>{currentPost?.title}</h1>
-                <p>{currentPost?.body}</p>
+                <h1>{post?.title}</h1>
+                <p>{post?.body}</p>
             </div>
         </div>
     );
-};
-
-export default PostPage;
+}

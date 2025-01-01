@@ -1,21 +1,19 @@
-'use client';
 import Link from "next/link";
 import "../styles/Home.css";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
-import { fetchPostsRequest } from "./redux/slices/postsSlice";
-import { RootState } from "./redux/store";
 
-const Home = () => {
-  const dispatch = useDispatch();
-  const { posts, loading, error } = useSelector((state: RootState) => state.posts);
+export default async function HomePage() {
+  const fetchPosts = async () => {
+    const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
+      next: { revalidate: 60 },
+    });
 
-  useEffect(() => {
-    dispatch(fetchPostsRequest());
-  }, [dispatch]);
+    if (!response.ok) {
+      throw new Error("Failed to fetch posts");
+    }
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+    return response.json();
+  }
+  const posts = await fetchPosts();
 
   return (
     <>
@@ -23,12 +21,12 @@ const Home = () => {
         <h1>Post List</h1>
         <div className="create-button">
           <Link href="/create">
-            <button>Create New Post</button>
+            Create New Post
           </Link>
         </div>
       </div>
       <div className="grid">
-        {posts.map((post) => (
+        {posts.map((post: { id: number; title: string; body: string }) => (
           <Link href={`/posts/${post.id}`} key={post.id} className="card">
             <h2>{post.title}</h2>
           </Link>
@@ -36,6 +34,4 @@ const Home = () => {
       </div>
     </>
   );
-};
-
-export default Home;
+}
