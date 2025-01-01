@@ -61,6 +61,20 @@ const postsSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+
+    editPostRequest(state, action) {
+      state.loading = true;
+    },
+    editPostSuccess(state, action) {
+      state.loading = false;
+      state.posts = state.posts.map((post) =>
+        post.id === action.payload.id ? action.payload : post
+      );
+    },
+    editPostFailure(state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
   },
 });
 
@@ -76,6 +90,10 @@ export const {
   fetchPostByIdRequest,
   fetchPostByIdSuccess,
   fetchPostByIdFailure,
+
+  editPostRequest,
+  editPostSuccess,
+  editPostFailure,
 } = postsSlice.actions;
 
 export default postsSlice.reducer;

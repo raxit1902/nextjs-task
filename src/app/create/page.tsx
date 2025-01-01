@@ -33,7 +33,16 @@ const CreatePost = () => {
                 value={body}
                 onChange={(e) => setBody(e.target.value)}
             ></textarea>
-            <button type="submit">Create Post</button>
+            <div className="form-buttons">
+                <button
+                    type="button"
+                    className="button dark-button"
+                    onClick={() => router.back()}
+                >
+                    Cancel
+                </button>
+                <button type="submit" className="button primary-button">Submit</button>
+            </div>
         </form>
     );
 };

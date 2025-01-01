@@ -38,3 +38,35 @@ h1 {
   margin: 0;
   font-size: 1.5rem;
 }
+
+.button {
+  padding: 0.5rem 1rem;
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.primary-button {
+  background-color: #0070f3;
+}
+.success-button {
+  background-color: #28a745;
+}
+.dark-button {
+  background-color: #333;
+}
+
+.primary-button:hover {
+  background-color: #005bb5;
+}
+
+.success-button:hover {
+  background-color: #218838;
+}
+
+.dark-button:hover {
+  background-color: #000;
+}

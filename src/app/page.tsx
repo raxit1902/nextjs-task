@@ -20,7 +20,7 @@ export default async function HomePage() {
       <div className="header">
         <h1>Post List</h1>
         <div className="create-button">
-          <Link href="/create">
+          <Link href="/create" className="button success-button">
             Create New Post
           </Link>
         </div>
