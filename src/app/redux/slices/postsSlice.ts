@@ -26,19 +26,6 @@ const postsSlice = createSlice({
   name: "posts",
   initialState,
   reducers: {
-    fetchPostsRequest(state) {
-      state.loading = true;
-      state.error = null;
-    },
-    fetchPostsSuccess(state, action) {
-      state.loading = false;
-      state.posts = action.payload;
-    },
-    fetchPostsFailure(state, action) {
-      state.loading = false;
-      state.error = action.payload;
-    },
-
     createPostRequest(state, action) {
       state.loading = true;
       state.error = null;
@@ -73,12 +60,15 @@ const postsSlice = createSlice({
 
     editPostRequest(state, action) {
       state.loading = true;
+      state.error = null;
+      state.success = null;
     },
     editPostSuccess(state, action) {
       state.loading = false;
       state.posts = state.posts.map((post) =>
         post.id === action.payload.id ? action.payload : post
       );
+      state.success = "Post created successfully!";
     },
     editPostFailure(state, action) {
       state.loading = false;
@@ -88,10 +78,6 @@ const postsSlice = createSlice({
 });
 
 export const {
-  fetchPostsRequest,
-  fetchPostsSuccess,
-  fetchPostsFailure,
-
   createPostRequest,
   createPostSuccess,
   createPostFailure,

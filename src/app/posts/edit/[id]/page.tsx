@@ -8,16 +8,20 @@ import {
 } from "../../../redux/slices/postsSlice";
 import { useRouter, useParams } from "next/navigation";
 import { RootState } from "../../../redux/store";
+import { toast } from "react-toastify";
 import "@/styles/CreateEdit.css";
 
 const page = () => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
+  const [errorTitle, setErrorTitle] = useState("");
+  const [errorBody, setErrorBody] = useState("");
+
   const dispatch = useDispatch();
   const router = useRouter();
   const params = useParams();
   const { id } = params;
-  const { currentPost, loading, error } = useSelector(
+  const { currentPost, loading, error, success } = useSelector(
     (state: RootState) => state.posts
   );
 
@@ -34,32 +38,62 @@ const page = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(editPostRequest({ id, title, body }));
-    router.back();
+    if (!title.trim()) {
+      setErrorTitle("Title is required!");
+    } else {
+      setErrorTitle("");
+    }
+
+    if (!body.trim()) {
+      setErrorBody("Body is required!");
+    } else {
+      setErrorBody("");
+    }
+
+    if (title.trim() && body.trim()) {
+      dispatch(editPostRequest({ id, title, body }));
+    }
+
   };
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
-
-  if (error) {
-    return <p>Error: {error}</p>;
-  }
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+    if (success) {
+      toast.success(success);
+      router.back();
+    }
+  }, [error, success, dispatch, router]);
 
   return (
     <form className='form' onSubmit={handleSubmit}>
       <h1>Edit Post</h1>
-      <input
-        type='text'
-        placeholder='Title'
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <textarea
-        placeholder='Body'
-        value={body}
-        onChange={(e) => setBody(e.target.value)}
-      ></textarea>
+      <div className="input-div">
+        <input
+          type='text'
+          placeholder='Title'
+          value={title}
+          onChange={(e) => {
+            setTitle(e.target.value)
+            setErrorTitle('')
+          }}
+        />
+        <div>{errorTitle && <p className='error'>{errorTitle}</p>}</div>
+      </div>
+      <div className="input-div">
+
+        <textarea
+          placeholder='Body'
+          value={body}
+          onChange={(e) => {
+            setBody(e.target.value)
+            setErrorBody('')
+          }}
+        ></textarea>
+        <div>{errorBody && <p className='error'>{errorBody}</p>}</div>
+      </div>
+
       <div className="form-buttons">
         <button
           type="button"
@@ -68,7 +102,9 @@ const page = () => {
         >
           Cancel
         </button>
-        <button type='submit' className='button primary-button'>Submit</button>
+        <button type='submit' className='button primary-button'>
+          {loading ? "Submitting..." : "Submit"}
+        </button>
       </div>
     </form>
   );

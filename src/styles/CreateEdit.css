@@ -18,6 +18,11 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 1rem;
+  width: 100%;
+}
+
+.form .input-div {
+  width: 100%;
 }
 
 .form-buttons {
@@ -27,4 +32,9 @@
 
 .form-buttons button {
   width: 100%;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
 }

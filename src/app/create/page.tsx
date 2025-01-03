@@ -10,6 +10,9 @@ import "@/styles/CreateEdit.css";
 const CreatePost = () => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
+  const [errorTitle, setErrorTitle] = useState("");
+  const [errorBody, setErrorBody] = useState("");
+
   const dispatch = useDispatch();
   const router = useRouter();
   const { loading, error, success } = useSelector(
@@ -18,7 +21,22 @@ const CreatePost = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(createPostRequest({ title, body }));
+
+    if (!title.trim()) {
+      setErrorTitle("Title is required!");
+    } else {
+      setErrorTitle("");
+    }
+
+    if (!body.trim()) {
+      setErrorBody("Body is required!");
+    } else {
+      setErrorBody("");
+    }
+
+    if (title.trim() && body.trim()) {
+      dispatch(createPostRequest({ title, body }));
+    }
   };
 
   useEffect(() => {
@@ -36,17 +54,32 @@ const CreatePost = () => {
   return (
     <form className='form' onSubmit={handleSubmit}>
       <h1>Create a New Post</h1>
-      <input
-        type='text'
-        placeholder='Title'
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <textarea
-        placeholder='Body'
-        value={body}
-        onChange={(e) => setBody(e.target.value)}
-      ></textarea>
+
+      <div className="input-div">
+        <input
+          type='text'
+          placeholder='Title'
+          value={title}
+          onChange={(e) => {
+            setTitle(e.target.value)
+            setErrorTitle('')
+          }}
+        />
+        <div>{errorTitle && <p className='error'>{errorTitle}</p>}</div>
+      </div>
+
+      <div className="input-div">
+        <textarea
+          placeholder='Body'
+          value={body}
+          onChange={(e) => {
+            setBody(e.target.value)
+            setErrorBody('')
+          }}
+        ></textarea>
+        <div>{errorBody && <p className='error'>{errorBody}</p>}</div>
+      </div>
+
       <div className='form-buttons'>
         <button
           type='button'
@@ -55,7 +88,7 @@ const CreatePost = () => {
         >
           Cancel
         </button>
-        <button type='submit' className='button primary-button' disabled={loading}>
+        <button type='submit' className='button primary-button'>
           {loading ? "Submitting..." : "Submit"}
         </button>
       </div>

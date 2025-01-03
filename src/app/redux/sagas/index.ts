@@ -1,8 +1,5 @@
 import { all, call, put, takeEvery } from "redux-saga/effects";
 import {
-  fetchPostsRequest,
-  fetchPostsSuccess,
-  fetchPostsFailure,
   createPostRequest,
   createPostSuccess,
   createPostFailure,
@@ -15,20 +12,6 @@ import {
   Post,
 } from "../slices/postsSlice";
 import { PayloadAction } from "@reduxjs/toolkit";
-
-function* fetchPostsSaga() {
-  try {
-    const response: Response = yield call(
-      fetch,
-      "https://jsonplaceholder.typicode.com/posts"
-    );
-    const data: Post[] = yield response.json();
-    yield put(fetchPostsSuccess(data));
-  } catch (error) {
-    const message = (error as Error).message || "Unknown error";
-    yield put(fetchPostsFailure(message));
-  }
-}
 
 function* createPostSaga(
   action: PayloadAction<{ title: string; body: string }>
@@ -43,10 +26,14 @@ function* createPostSaga(
         body: JSON.stringify(action.payload),
       }
     );
-    const data: Post = yield response.json();
-    yield put(createPostSuccess(data));
+    if (!response.ok) {
+      yield put(createPostFailure("Failed to create post"));
+    } else {
+      const data: Post = yield response.json();
+      yield put(createPostSuccess(data));
+    }
   } catch (error) {
-    const message = (error as Error).message || "Unknown error";
+    const message = "Something went wrong!!";
     yield put(createPostFailure(message));
   }
 }
@@ -82,17 +69,20 @@ function* editPostSaga(
         body: JSON.stringify(action.payload),
       }
     );
-    const data: Post = yield response.json();
-    yield put(editPostSuccess(data));
+    if (!response.ok) {
+      yield put(editPostFailure(`Failed to edit post`));
+    } else {
+      const data: Post = yield response.json();
+      yield put(editPostSuccess(data));
+    }
   } catch (error) {
-    const message = (error as Error).message || "Unknown error";
+    const message = "Something went wrong!!";
     yield put(editPostFailure(message));
   }
 }
 
 function* rootSaga() {
   yield all([
-    takeEvery(fetchPostsRequest.toString(), fetchPostsSaga),
     takeEvery(createPostRequest.toString(), createPostSaga),
     takeEvery(fetchPostByIdRequest.toString(), fetchPostByIdSaga),
     takeEvery(editPostRequest.toString(), editPostSaga),

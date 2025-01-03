@@ -13,7 +13,7 @@ async function fetchPosts() {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to fetch posts");
+    throw new Error("Something went wrong.");
   }
 
   return response.json();
@@ -29,10 +29,6 @@ export default async function HomePage() {
     errorMessage = error instanceof Error ? error.message : "Something went wrong.";
   }
 
-  if (!posts) {
-    return <div className="loading">Loading...</div>;
-  }
-
   if (errorMessage) {
     return <div className="error">{errorMessage}</div>;
   }
@@ -46,9 +42,9 @@ export default async function HomePage() {
         </Link>
       </div>
       <div className='grid'>
-        {posts.map((post: { id: number; title: string; body: string }) => (
-          <Link href={`/posts/${post.id}`} key={post.id} className='card'>
-            <h2>{post.title}</h2>
+        {posts && posts.length > 0 && posts.map((post: { id: number; title: string; body: string }) => (
+          <Link href={`/posts/${post?.id}`} key={post?.id} className='card'>
+            <h2>{post?.title}</h2>
           </Link>
         ))}
       </div>
