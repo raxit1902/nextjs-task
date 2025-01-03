@@ -1,15 +1,9 @@
 "use client";
-import type { Metadata } from "next";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createPostRequest } from "../redux/slices/postsSlice";
 import { useRouter } from "next/navigation";
 import "@/styles/CreateEdit.css";
-
-export const metadata: Metadata = {
-  title: "Create Post",
-  description: "Create a new post",
-};
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");

@@ -1,10 +1,4 @@
-import { Metadata } from "next";
 import PostPage from "./PostPage";
-
-export const metadata: Metadata = {
-  title: "Post Detail",
-  description: "Post Detail Page",
-};
 
 export default async function PostPageWrapper({ params }: any) {
   const { id } = params;

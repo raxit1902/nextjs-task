@@ -9,12 +9,6 @@ import {
 import { useRouter, useParams } from "next/navigation";
 import { RootState } from "../../../redux/store";
 import "@/styles/CreateEdit.css";
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: 'Post Edit',
-  description: 'Post Edit Page',
-}
 
 const page = () => {
   const [title, setTitle] = useState("");
@@ -70,7 +64,7 @@ const page = () => {
         <button
           type="button"
           className="button dark-button"
-          onClick={() => router.push("/")}
+          onClick={() => router.back()}
         >
           Cancel
         </button>
