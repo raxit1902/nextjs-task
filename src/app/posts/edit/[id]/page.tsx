@@ -8,8 +8,13 @@ import {
 } from "../../../redux/slices/postsSlice";
 import { useRouter, useParams } from "next/navigation";
 import { RootState } from "../../../redux/store";
-
 import "@/styles/CreateEdit.css";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: 'Post Edit',
+  description: 'Post Edit Page',
+}
 
 const page = () => {
   const [title, setTitle] = useState("");

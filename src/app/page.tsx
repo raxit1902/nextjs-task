@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import "../styles/Home.css";
+
+export const metadata: Metadata = {
+  title: "Home Page",
+  description: "Post listing",
+};
 
 export default async function HomePage() {
   const fetchPosts = async () => {
@@ -12,20 +18,20 @@ export default async function HomePage() {
     }
 
     return response.json();
-  }
+  };
   const posts = await fetchPosts();
 
   return (
     <>
-      <div className="header">
+      <div className='header'>
         <h1>Post List</h1>
-        <Link href="/create" className="button success-button">
+        <Link href='/create' className='button success-button'>
           Create New Post
         </Link>
       </div>
-      <div className="grid">
+      <div className='grid'>
         {posts.map((post: { id: number; title: string; body: string }) => (
-          <Link href={`/posts/${post.id}`} key={post.id} className="card">
+          <Link href={`/posts/${post.id}`} key={post.id} className='card'>
             <h2>{post.title}</h2>
           </Link>
         ))}
