@@ -73,11 +73,15 @@ function* editPostSaga(
   action: PayloadAction<{ id: number; title: string; body: string }>
 ) {
   try {
-    const response: Response = yield call(fetch, `https://jsonplaceholder.typicode.com/posts/${action.payload.id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(action.payload),
-    });
+    const response: Response = yield call(
+      fetch,
+      `https://jsonplaceholder.typicode.com/posts/${action.payload.id}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(action.payload),
+      }
+    );
     const data: Post = yield response.json();
     yield put(editPostSuccess(data));
   } catch (error) {
@@ -85,7 +89,6 @@ function* editPostSaga(
     yield put(editPostFailure(message));
   }
 }
-
 
 function* rootSaga() {
   yield all([

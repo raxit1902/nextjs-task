@@ -1,8 +1,10 @@
 "use client";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { createPostRequest } from "../redux/slices/postsSlice";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { createPostRequest, clearMessages } from "../redux/slices/postsSlice";
+import { RootState } from "../redux/store";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 import "@/styles/CreateEdit.css";
 
 const CreatePost = () => {
@@ -10,12 +12,26 @@ const CreatePost = () => {
   const [body, setBody] = useState("");
   const dispatch = useDispatch();
   const router = useRouter();
+  const { loading, error, success } = useSelector(
+    (state: RootState) => state.posts
+  );
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     dispatch(createPostRequest({ title, body }));
-    router.push("/");
   };
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+      dispatch(clearMessages());
+    }
+    if (success) {
+      toast.success(success);
+      dispatch(clearMessages());
+      router.push("/");
+    }
+  }, [error, success, dispatch, router]);
 
   return (
     <form className='form' onSubmit={handleSubmit}>
@@ -39,8 +55,8 @@ const CreatePost = () => {
         >
           Cancel
         </button>
-        <button type='submit' className='button primary-button'>
-          Submit
+        <button type='submit' className='button primary-button' disabled={loading}>
+          {loading ? "Submitting..." : "Submit"}
         </button>
       </div>
     </form>

@@ -10,6 +10,7 @@ interface PostsState {
   posts: Post[];
   loading: boolean;
   error: string | null;
+  success: string | null;
   currentPost: Post | null;
 }
 
@@ -17,6 +18,7 @@ const initialState: PostsState = {
   posts: [],
   loading: false,
   error: null,
+  success: null,
   currentPost: null,
 };
 
@@ -39,14 +41,21 @@ const postsSlice = createSlice({
 
     createPostRequest(state, action) {
       state.loading = true;
+      state.error = null;
+      state.success = null;
     },
     createPostSuccess(state, action) {
       state.loading = false;
       state.posts.push(action.payload);
+      state.success = "Post created successfully!";
     },
     createPostFailure(state, action) {
       state.loading = false;
       state.error = action.payload;
+    },
+    clearMessages(state) {
+      state.error = null;
+      state.success = null;
     },
 
     fetchPostByIdRequest(state, action) {
@@ -86,6 +95,7 @@ export const {
   createPostRequest,
   createPostSuccess,
   createPostFailure,
+  clearMessages,
 
   fetchPostByIdRequest,
   fetchPostByIdSuccess,

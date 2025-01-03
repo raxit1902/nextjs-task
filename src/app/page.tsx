@@ -7,19 +7,35 @@ export const metadata: Metadata = {
   description: "Post listing",
 };
 
+async function fetchPosts() {
+  const response = await fetch("http://jsonplaceholder.typicode.com/posts", {
+    next: { revalidate: 60 },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch posts");
+  }
+
+  return response.json();
+}
+
 export default async function HomePage() {
-  const fetchPosts = async () => {
-    const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
-      next: { revalidate: 60 },
-    });
+  let posts;
+  let errorMessage;
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch posts");
-    }
+  try {
+    posts = await fetchPosts();
+  } catch (error) {
+    errorMessage = error instanceof Error ? error.message : "Something went wrong.";
+  }
 
-    return response.json();
-  };
-  const posts = await fetchPosts();
+  if (!posts) {
+    return <div className="loading">Loading...</div>;
+  }
+
+  if (errorMessage) {
+    return <div className="error">{errorMessage}</div>;
+  }
 
   return (
     <>
