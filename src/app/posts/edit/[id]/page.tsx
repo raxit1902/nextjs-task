@@ -107,7 +107,7 @@ const page = () => {
           >
             Cancel
           </button>
-          <button type='submit' className='button primary-button'>
+          <button type='submit' data-testid="submit-button" className='button primary-button'>
             {loading ? "Submitting..." : "Submit"}
           </button>
         </div>

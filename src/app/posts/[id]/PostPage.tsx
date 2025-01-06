@@ -55,7 +55,7 @@ export default function PostPage({ post }: { post: { id: string; title: string; 
                     </CommonTooltip>
 
                     <CommonTooltip id="edit-icon" content="Edit Post">
-                        <Link href={`/posts/edit/${post?.id}`} as={`/posts/edit/${post?.id}`} className="">
+                        <Link href={`/posts/edit/${post?.id}`} data-testid="edit-btn" as={`/posts/edit/${post?.id}`} className="">
                             <Icon icon="ic:outline-edit" width="28" height="28" data-tooltip-id="tooltip-id" />
                         </Link>
                     </CommonTooltip>

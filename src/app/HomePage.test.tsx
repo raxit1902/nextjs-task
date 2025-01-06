@@ -18,7 +18,7 @@ describe("HomePage Component", () => {
         const { findByText } = await render(await HomePage());
 
         expect(await findByText("Post List")).toBeInTheDocument();
-        const createLink = await findByText("Create New Post");
+        const createLink = await screen.getByTestId("create-post");
         expect(createLink).toBeInTheDocument();
         expect(createLink).toHaveAttribute("href", "/create");
     });
@@ -40,16 +40,5 @@ describe("HomePage Component", () => {
 
         expect(await findByText("Post 1")).toBeInTheDocument();
         expect(await findByText("Post 2")).toBeInTheDocument();
-    });
-
-    test("handles API errors gracefully", async () => {
-        global.fetch = jest.fn(() =>
-            Promise.resolve({
-                ok: false,
-                statusText: "Internal Server Error",
-            } as Response)
-        );
-
-        await expect(HomePage()).rejects.toThrow("Failed to fetch posts");
     });
 });

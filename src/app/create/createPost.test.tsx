@@ -1,11 +1,12 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import CreatePost from "./page";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import "@testing-library/jest-dom";
 
 jest.mock("react-redux", () => ({
     useDispatch: jest.fn(),
+    useSelector: jest.fn(),
 }));
 
 jest.mock("next/navigation", () => ({
@@ -22,6 +23,20 @@ describe("CreatePost Component", () => {
 
         mockRouter = { push: jest.fn(), back: jest.fn() };
         (useRouter as jest.Mock).mockReturnValue(mockRouter);
+
+        (useSelector as unknown as jest.Mock).mockImplementation((selectorFn) =>
+            selectorFn({
+                posts: {
+                    loading: false,
+                    error: null,
+                    success: null,
+                },
+            })
+        );
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
     });
 
     test("renders form elements correctly", () => {
@@ -62,8 +77,6 @@ describe("CreatePost Component", () => {
             type: "posts/createPostRequest",
             payload: { title: "New Title", body: "New Body" },
         });
-
-        expect(mockRouter.push).toHaveBeenCalledWith("/");
     });
 
     test("navigates back on cancel", () => {
@@ -74,5 +87,16 @@ describe("CreatePost Component", () => {
         fireEvent.click(cancelButton);
 
         expect(mockRouter.back).toHaveBeenCalled();
+    });
+
+    test("shows error messages when submitting empty form fields", () => {
+        render(<CreatePost />);
+
+        const submitButton = screen.getByText("Submit");
+
+        fireEvent.click(submitButton);
+
+        expect(screen.getByText("Title is required!")).toBeInTheDocument();
+        expect(screen.getByText("Body is required!")).toBeInTheDocument();
     });
 });

@@ -7,7 +7,12 @@ const fetchPostById = async (id: string) => {
   if (!response.ok) {
     throw new Error("Failed to fetch post");
   }
-  return response.json();
+  const post = await response.json();
+
+  if (!post || !post.title || !post.body) {
+    throw new Error("Malformed response");
+  }
+  return post;
 };
 
 export async function generateMetadata({ params }: any): Promise<Metadata> {
@@ -22,7 +27,10 @@ export async function generateMetadata({ params }: any): Promise<Metadata> {
 
 export default async function PostPageWrapper({ params }: any) {
   const { id } = await params;
-  const post = await fetchPostById(id);
-
-  return <PostPage post={post} />;
+  try {
+    const post = await fetchPostById(id);
+    return <PostPage post={post} />;
+  } catch (error) {
+    throw new Error(error instanceof Error ? error.message : "An unknown error occurred");
+  }
 }

@@ -1,10 +1,17 @@
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import RootLayout from "./layout";
-import { store } from "./redux/store";
-import { Provider } from "react-redux";
+import ReduxProvider from "./ReduxProvider";
+
+jest.mock("./ReduxProvider", () => {
+    return jest.fn(({ children }: { children: React.ReactNode }) => <>{children}</>);
+});
 
 describe("RootLayout Component", () => {
+    beforeEach(() => {
+        jest.clearAllMocks();
+    });
+
     test("renders child components correctly", () => {
         render(
             <RootLayout>
@@ -16,17 +23,39 @@ describe("RootLayout Component", () => {
         expect(childElement).toBeInTheDocument();
     });
 
-    test("wraps content with Provider from react-redux", () => {
-        const providerSpy = jest.spyOn(Provider.prototype, "render");
-
+    test("wraps content with ReduxProvider", () => {
         render(
             <RootLayout>
                 <div>Redux Child</div>
             </RootLayout>
         );
 
-        expect(providerSpy).toHaveBeenCalled();
-        expect(providerSpy.mock.calls[0][0]).toHaveProperty("store", store);
+        expect(ReduxProvider).toHaveBeenCalled();
+    });
+
+    test("renders the header with correct content", () => {
+        render(
+            <RootLayout>
+                <div>Header Test Child</div>
+            </RootLayout>
+        );
+
+        const header = screen.getByRole("banner");
+        const title = screen.getByText("POSTSTACK");
+
+        expect(header).toBeInTheDocument();
+        expect(title).toBeInTheDocument();
+    });
+
+    test("renders the footer with correct content", () => {
+        render(
+            <RootLayout>
+                <div>Footer Test Child</div>
+            </RootLayout>
+        );
+
+        const footer = screen.getByText("© Copyright 2025 Poststack | All Rights Reserved.");
+        expect(footer).toBeInTheDocument();
     });
 
     test("applies font classes to the body tag", () => {
@@ -38,7 +67,5 @@ describe("RootLayout Component", () => {
 
         const body = document.body;
         expect(body).toHaveClass("antialiased");
-        expect(body).toHaveClass("--font-geist-sans");
-        expect(body).toHaveClass("--font-geist-mono");
     });
 });

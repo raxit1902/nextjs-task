@@ -41,7 +41,7 @@ export default async function HomePage() {
       <div className='post-list-title-div'>
         <h1>Post List</h1>
         <CommonTooltip id="create-post-icon" content="Create New Post">
-          <Link href='/create' className='create-post-btn'>
+          <Link href='/create' data-testid="create-post" className='create-post-btn'>
             <Icon icon="ic:baseline-plus" width="28" height="28" data-tooltip-id="tooltip-id" />
           </Link>
         </CommonTooltip>

@@ -1,12 +1,12 @@
 import { render, screen } from "@testing-library/react";
-import Page from "./page"; // Import the page.tsx file
+import PostPageWrapper from "./page"; // Import the page.tsx file
 import "@testing-library/jest-dom";
 
 global.fetch = jest.fn();
 
-describe("Page Component (Server-Side Wrapper)", () => {
+describe("PostPageWrapper Component", () => {
     beforeEach(() => {
-        jest.resetAllMocks();
+        jest.resetAllMocks(); // Reset all mocks before each test
     });
 
     test("renders post details correctly when API call is successful", async () => {
@@ -19,22 +19,47 @@ describe("Page Component (Server-Side Wrapper)", () => {
             }),
         });
 
-        render(await Page({ params: { id: "1" } }));
+        const params = { id: "1" };
+        const { container } = render(await PostPageWrapper({ params }));
 
         const title = await screen.findByText("Sample Post");
         const body = await screen.findByText("This is a sample post body.");
-        const goBackLink = screen.getByTestId("go-back");
-
         expect(title).toBeInTheDocument();
         expect(body).toBeInTheDocument();
-        expect(goBackLink).toHaveAttribute("href", "/");
+
+        expect(global.fetch).toHaveBeenCalledWith(
+            `https://jsonplaceholder.typicode.com/posts/1`
+        );
+        expect(container).toMatchSnapshot(); // Optional: Snapshot testing for the rendered component
     });
 
-    test("renders error message when API call fails", async () => {
+    test("throws an error when API call fails", async () => {
         (global.fetch as jest.Mock).mockResolvedValueOnce({
             ok: false,
         });
 
-        await expect(Page({ params: { id: "1" } })).rejects.toThrow("Failed to fetch post");
+        const params = { id: "1" };
+
+        await expect(PostPageWrapper({ params })).rejects.toThrow("Failed to fetch post");
+
+        expect(global.fetch).toHaveBeenCalledWith(
+            `https://jsonplaceholder.typicode.com/posts/1`
+        );
     });
+
+    test("throws an error if fetch response is malformed", async () => {
+        (global.fetch as jest.Mock).mockResolvedValueOnce({
+            ok: true,
+            json: async () => ({}), // Empty object to simulate malformed response
+        });
+
+        const params = { id: "1" };
+
+        await expect(PostPageWrapper({ params })).rejects.toThrow("Malformed response");
+
+        expect(global.fetch).toHaveBeenCalledWith(
+            `https://jsonplaceholder.typicode.com/posts/1`
+        );
+    });
+
 });

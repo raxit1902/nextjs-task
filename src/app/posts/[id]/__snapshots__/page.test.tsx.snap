@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PostPageWrapper Component renders post details correctly when API call is successful 1`] = `
+<div>
+  <div>
+    <div
+      class="btn-container"
+    >
+      <div
+        class="btn-left-div"
+      >
+        <div
+          data-tooltip-id="home-icon"
+        >
+          <a
+            class=""
+            data-testid="go-back"
+            href="/"
+          >
+            <span />
+          </a>
+        </div>
+      </div>
+      <div
+        class="btn-right-div"
+      >
+        <div
+          data-tooltip-id="revalidate-icon"
+        >
+          <button
+            class="revalidate-btn "
+          >
+            <span />
+          </button>
+        </div>
+        <div
+          data-tooltip-id="edit-icon"
+        >
+          <a
+            class=""
+            data-testid="edit-btn"
+            href="/posts/edit/1"
+          >
+            <span />
+          </a>
+        </div>
+      </div>
+    </div>
+    <div
+      class="post"
+    >
+      <h1>
+        Sample Post
+      </h1>
+      <p>
+        This is a sample post body.
+      </p>
+    </div>
+  </div>
+</div>
+`;
