@@ -2,36 +2,88 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+html,
+body {
+  height: 100%;
+  margin: 0;
 }
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-/* body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-} */
 
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f4f4f4;
+  background-color: #fff !important;
   color: #333;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  background-color: rgba(255, 255, 255, .85) !important;
+  box-shadow: 0 0 50px 0 rgba(0, 0, 0, .1);
+  -webkit-transform: translateY(0);
+  transform: translateY(0);
+  border-color: transparent !important;
+  position: fixed;
+  top: 0;
+  right: 0;
+  color: black;
+  width: 100%;
+  z-index: 9999;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header img {
+  height: 50px;
+  width: 180px;
+}
+
+.header h1 {
+  flex: 1;
+  text-align: center;
+  background: linear-gradient(to right top, rgb(255, 30, 128) 15.923566878980886%, rgb(156, 50, 176) 50.63694267515923%, rgb(96, 0, 255) 99.68152866242038%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 32px;
+  font-weight: bold;
+}
+
+.footer {
+  background-color: #fff;
+  padding: 1rem;
+  text-align: center;
+  color: #000;
+  border-top: 1px solid #ccc;
+}
+
+.tooltip {
+  z-index: 999999;
+}
+
+.children-div {
+  flex: 1;
+  background-color: #f4f5fa !important;
+  position: relative;
+  margin-top: 5em;
+  background-image: url('/img/crafto-landing-page-bg-01.webp');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: 100%;
+  overflow: auto;
 }
 
 .container {
-  max-width: 800px;
+  max-width: 1220px;
   margin: 0 auto;
   padding: 1rem;
+  position: relative;
 }
 
 h1 {
@@ -45,16 +97,16 @@ h1 {
 
 .button {
   padding: 0.5rem 1rem;
-  background-color: #0070f3;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.2s;
+  transition: all .3s ease-in-out;
 }
 
 .primary-button {
-  background-color: #0070f3;
+  background-image: linear-gradient(to right, #ff1e80, #ab2fa8, #7d18d8);
 }
 
 .success-button {
@@ -66,7 +118,9 @@ h1 {
 }
 
 .primary-button:hover {
-  background-color: #005bb5;
+  background-position: right center;
+  background-color: inherit;
+  background-size: 200% auto;
 }
 
 .success-button:hover {

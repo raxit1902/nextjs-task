@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Icon } from "@iconify/react";
+import CommonTooltip from "./common/Tooltip";
+import Card from "./common/Card";
 import "../styles/Home.css";
 
 export const metadata: Metadata = {
@@ -35,16 +38,19 @@ export default async function HomePage() {
 
   return (
     <>
-      <div className='header'>
+      <div className='post-list-title-div'>
         <h1>Post List</h1>
-        <Link href='/create' className='button success-button'>
-          Create New Post
-        </Link>
+        <CommonTooltip id="create-post-icon" content="Create New Post">
+          <Link href='/create' className='create-post-btn'>
+            <Icon icon="ic:baseline-plus" width="28" height="28" data-tooltip-id="tooltip-id" />
+          </Link>
+        </CommonTooltip>
       </div>
+
       <div className='grid'>
         {posts && posts.length > 0 && posts.map((post: { id: number; title: string; body: string }) => (
-          <Link href={`/posts/${post?.id}`} key={post?.id} className='card'>
-            <h2>{post?.title}</h2>
+          <Link href={`/posts/${post?.id}`} key={post?.id}>
+            <Card title={post?.title} />
           </Link>
         ))}
       </div>

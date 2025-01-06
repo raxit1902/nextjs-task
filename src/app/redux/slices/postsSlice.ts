@@ -68,7 +68,7 @@ const postsSlice = createSlice({
       state.posts = state.posts.map((post) =>
         post.id === action.payload.id ? action.payload : post
       );
-      state.success = "Post created successfully!";
+      state.success = "Post Edited successfully!";
     },
     editPostFailure(state, action) {
       state.loading = false;

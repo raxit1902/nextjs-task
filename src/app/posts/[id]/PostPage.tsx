@@ -1,6 +1,8 @@
 'use client';
 import "../../../styles/Post.css";
 import Link from "next/link";
+import { Icon } from "@iconify/react";
+import CommonTooltip from "../../common/Tooltip";
 
 export default function PostPage({ post }: { post: { id: string; title: string; body: string } }) {
 
@@ -35,13 +37,29 @@ export default function PostPage({ post }: { post: { id: string; title: string; 
     return (
         <div>
             <div className="btn-container">
-                <Link href="/" data-testid="go-back" className="button dark-button">
-                    Go Back
-                </Link>
-                <button onClick={handleRevalidate} className="button dark-button">Revalidate</button>
-                <Link href={`/posts/edit/${post?.id}`} as={`/posts/edit/${post?.id}`} className="button dark-button">
-                    Edit Post
-                </Link>
+
+                <div className="btn-left-div">
+                    <CommonTooltip id="home-icon" content="Go to Home">
+                        <Link href="/" data-testid="go-back" className="">
+                            <Icon icon="famicons:home-sharp" width="28" height="28" data-tooltip-id="tooltip-id" />
+                        </Link>
+                    </CommonTooltip>
+                </div>
+
+                <div className="btn-right-div">
+
+                    <CommonTooltip id="revalidate-icon" content="Revalidate Post">
+                        <button onClick={handleRevalidate} className="revalidate-btn ">
+                            <Icon icon="material-symbols:refresh" width="28" height="28" data-tooltip-id="tooltip-id" />
+                        </button>
+                    </CommonTooltip>
+
+                    <CommonTooltip id="edit-icon" content="Edit Post">
+                        <Link href={`/posts/edit/${post?.id}`} as={`/posts/edit/${post?.id}`} className="">
+                            <Icon icon="ic:outline-edit" width="28" height="28" data-tooltip-id="tooltip-id" />
+                        </Link>
+                    </CommonTooltip>
+                </div>
             </div>
             <div className="post">
                 <h1>{post?.title}</h1>

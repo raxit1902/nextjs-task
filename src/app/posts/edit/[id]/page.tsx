@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   fetchPostByIdRequest,
   editPostRequest,
+  clearMessages
 } from "../../../redux/slices/postsSlice";
 import { useRouter, useParams } from "next/navigation";
 import { RootState } from "../../../redux/store";
@@ -62,51 +63,56 @@ const page = () => {
     }
     if (success) {
       toast.success(success);
+      dispatch(clearMessages());
       router.back();
     }
   }, [error, success, dispatch, router]);
 
   return (
-    <form className='form' onSubmit={handleSubmit}>
-      <h1>Edit Post</h1>
-      <div className="input-div">
-        <input
-          type='text'
-          placeholder='Title'
-          value={title}
-          onChange={(e) => {
-            setTitle(e.target.value)
-            setErrorTitle('')
-          }}
-        />
-        <div>{errorTitle && <p className='error'>{errorTitle}</p>}</div>
-      </div>
-      <div className="input-div">
+    <>
+      <h1 className="title">Edit Post</h1>
 
-        <textarea
-          placeholder='Body'
-          value={body}
-          onChange={(e) => {
-            setBody(e.target.value)
-            setErrorBody('')
-          }}
-        ></textarea>
-        <div>{errorBody && <p className='error'>{errorBody}</p>}</div>
-      </div>
+      <form className='form' onSubmit={handleSubmit}>
+        <div className="input-div">
+          <input
+            type='text'
+            placeholder='Title'
+            value={title}
+            onChange={(e) => {
+              setTitle(e.target.value)
+              setErrorTitle('')
+            }}
+          />
+          <div>{errorTitle && <p className='error'>{errorTitle}</p>}</div>
+        </div>
+        <div className="input-div">
 
-      <div className="form-buttons">
-        <button
-          type="button"
-          className="button dark-button"
-          onClick={() => router.back()}
-        >
-          Cancel
-        </button>
-        <button type='submit' className='button primary-button'>
-          {loading ? "Submitting..." : "Submit"}
-        </button>
-      </div>
-    </form>
+          <textarea
+            placeholder='Body'
+            rows={4}
+            value={body}
+            onChange={(e) => {
+              setBody(e.target.value)
+              setErrorBody('')
+            }}
+          ></textarea>
+          <div>{errorBody && <p className='error'>{errorBody}</p>}</div>
+        </div>
+
+        <div className="form-buttons">
+          <button
+            type="button"
+            className="button dark-button"
+            onClick={() => router.back()}
+          >
+            Cancel
+          </button>
+          <button type='submit' className='button primary-button'>
+            {loading ? "Submitting..." : "Submit"}
+          </button>
+        </div>
+      </form>
+    </>
   );
 };
 

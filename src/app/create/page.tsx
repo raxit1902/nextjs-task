@@ -52,47 +52,50 @@ const CreatePost = () => {
   }, [error, success, dispatch, router]);
 
   return (
-    <form className='form' onSubmit={handleSubmit}>
-      <h1>Create a New Post</h1>
+    <>
+      <h1 className='title'>Create Post</h1>
+      <form className='form' onSubmit={handleSubmit}>
 
-      <div className="input-div">
-        <input
-          type='text'
-          placeholder='Title'
-          value={title}
-          onChange={(e) => {
-            setTitle(e.target.value)
-            setErrorTitle('')
-          }}
-        />
-        <div>{errorTitle && <p className='error'>{errorTitle}</p>}</div>
-      </div>
+        <div className="input-div">
+          <input
+            type='text'
+            placeholder='Title'
+            value={title}
+            onChange={(e) => {
+              setTitle(e.target.value)
+              setErrorTitle('')
+            }}
+          />
+          <div>{errorTitle && <p className='error'>{errorTitle}</p>}</div>
+        </div>
 
-      <div className="input-div">
-        <textarea
-          placeholder='Body'
-          value={body}
-          onChange={(e) => {
-            setBody(e.target.value)
-            setErrorBody('')
-          }}
-        ></textarea>
-        <div>{errorBody && <p className='error'>{errorBody}</p>}</div>
-      </div>
+        <div className="input-div">
+          <textarea
+            placeholder='Body'
+            rows={4}
+            value={body}
+            onChange={(e) => {
+              setBody(e.target.value)
+              setErrorBody('')
+            }}
+          ></textarea>
+          <div>{errorBody && <p className='error'>{errorBody}</p>}</div>
+        </div>
 
-      <div className='form-buttons'>
-        <button
-          type='button'
-          className='button dark-button'
-          onClick={() => router.back()}
-        >
-          Cancel
-        </button>
-        <button type='submit' className='button primary-button'>
-          {loading ? "Submitting..." : "Submit"}
-        </button>
-      </div>
-    </form>
+        <div className='form-buttons'>
+          <button
+            type='button'
+            className='button dark-button'
+            onClick={() => router.back()}
+          >
+            Cancel
+          </button>
+          <button type='submit' className='button primary-button'>
+            {loading ? "Submitting..." : "Submit"}
+          </button>
+        </div>
+      </form>
+    </>
   );
 };
 
